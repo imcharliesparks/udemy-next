@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import MeetupList from '../components/meetups/MeetupList'
-
 const DUMMY_MEETUPS = [
 	{
 		id: 123,
