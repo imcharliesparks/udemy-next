@@ -1,7 +1,8 @@
 import React from 'react'
-import type { NextPage, GetStaticProps, GetStaticPropsContext } from 'next'
 import MeetupDetail from '../../components/meetups/MeetupDetail'
-import { ApiMethods, Meetup } from '../../shared/types'
+import { Meetup } from '../../shared/types'
+import { connectMongoClient } from '../../shared/apiHelpers'
+import { ObjectId } from 'mongodb'
 
 type PageProps = {
 	meetup: Meetup
@@ -17,12 +18,13 @@ const Meetup = ({ meetup }: PageProps) => {
 
 export const getServerSideProps = async (context: any) => {
 	const meetupId = context.params?.meetupId
-	const response = await fetch(`http://localhost:3000/api/meetups/${meetupId}`)
-	const result = await response.json()
-	const meetup: Meetup | undefined = result.data
+	const collection = await connectMongoClient('meetups')
+	const response = await collection.find({ _id: new ObjectId(meetupId) }).toArray()
+	const meetups = response.map((meetup) => ({ ...meetup, _id: meetup._id.toString() }))
+
 	return {
 		props: {
-			meetup
+			meetup: meetups[0]
 		}
 	}
 }

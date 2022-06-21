@@ -1,4 +1,5 @@
 import MeetupList from '../components/meetups/MeetupList'
+import { connectMongoClient } from '../shared/apiHelpers'
 import { Meetup } from '../shared/types'
 
 const Home = (props: { meetups: Meetup[] }) => {
@@ -6,11 +7,13 @@ const Home = (props: { meetups: Meetup[] }) => {
 }
 
 export const getStaticProps = async () => {
-	const response = await fetch('http://localhost:3000/api/meetups/all-meetups')
-	const result = await response.json()
+	const collection = await connectMongoClient('meetups')
+	const response = await collection.find({}).toArray()
+	const meetups = response.map((meetup) => ({ ...meetup, _id: meetup._id.toString() }))
+
 	return {
 		props: {
-			meetups: result.data
+			meetups
 		}
 	}
 }
