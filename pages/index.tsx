@@ -1,17 +1,18 @@
-import type { NextPage } from 'next'
 import MeetupList from '../components/meetups/MeetupList'
-const DUMMY_MEETUPS = [
-	{
-		id: 123,
-		title: 'First Meetup',
-		image:
-			'https://www.carlrippon.com/static/4af46f1bec96814d38dc0c745f0f9142/f4b25/using-typeScript-with-react-cover.png',
-		address: '124 N Tustin Avenue'
-	}
-]
+import { Meetup } from '../shared/types'
 
-const Home: NextPage = () => {
-	return <MeetupList meetups={DUMMY_MEETUPS} />
+const Home = (props: { meetups: Meetup[] }) => {
+	return <MeetupList meetups={props.meetups} />
+}
+
+export const getStaticProps = async () => {
+	const response = await fetch('http://localhost:3000/api/meetups/all-meetups')
+	const result = await response.json()
+	return {
+		props: {
+			meetups: result.data
+		}
+	}
 }
 
 export default Home

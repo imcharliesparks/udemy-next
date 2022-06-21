@@ -1,7 +1,12 @@
+import { useRouter } from 'next/router'
+import type { NextRouter } from 'next/router'
 import Card from '../ui/Card'
 import classes from './MeetupItem.module.css'
+import { Meetup } from '../../shared/types'
 
-function MeetupItem(props: any) {
+function MeetupItem(props: Meetup) {
+	const router: NextRouter = useRouter()
+
 	return (
 		<li className={classes.item}>
 			<Card>
@@ -13,7 +18,9 @@ function MeetupItem(props: any) {
 					<address>{props.address}</address>
 				</div>
 				<div className={classes.actions}>
-					<button>Show Details</button>
+					<button type="button" onClick={() => router.push(`/${props._id}`)}>
+						Show Details
+					</button>
 				</div>
 			</Card>
 		</li>
