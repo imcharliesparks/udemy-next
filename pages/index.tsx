@@ -1,9 +1,18 @@
+import CustomHead from '../components/layout/Head'
 import MeetupList from '../components/meetups/MeetupList'
 import { connectMongoClient } from '../shared/apiHelpers'
 import { Meetup } from '../shared/types'
 
 const Home = (props: { meetups: Meetup[] }) => {
-	return <MeetupList meetups={props.meetups} />
+	return (
+		<>
+			<CustomHead
+				title="React Meetups"
+				metaContent={{ name: 'meetups', content: 'A place to view all of your meetups!' }}
+			/>
+			<MeetupList meetups={props.meetups} />
+		</>
+	)
 }
 
 export const getStaticProps = async () => {

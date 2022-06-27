@@ -4,6 +4,7 @@ import type { NextRouter } from 'next/router'
 import { useRouter } from 'next/router'
 import NewMeetupForm from '../../components/meetups/NewMeetupForm'
 import { ApiMethods, Meetup } from '../../shared/types'
+import CustomHead from '../../components/layout/Head'
 
 const NewMeetup: NextPage = () => {
 	const router: NextRouter = useRouter()
@@ -23,7 +24,15 @@ const NewMeetup: NextPage = () => {
 		}
 	}
 
-	return <NewMeetupForm onAddMeetup={addMeetupHandler} />
+	return (
+		<>
+			<CustomHead
+				title="Create a Meetup"
+				metaContent={{ name: 'Create a Meetup', content: 'Create your React meetup!' }}
+			/>
+			<NewMeetupForm onAddMeetup={addMeetupHandler} />
+		</>
+	)
 }
 
 export default NewMeetup
